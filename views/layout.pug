@@ -1,0 +1,28 @@
+doctype html
+html(lang="en")
+    head
+        include partials/header
+    body
+        header.barra
+            h1 UpTask - Administrador de Proyectos
+            a(href='/account-logout') Cerrar Sesión
+        
+        main.contenedor 
+            aside.contenedor-proyectos
+                .panel.crear-proyecto 
+                    a(href="/new-project" class="boton") Nuevo Proyecto
+                        span +
+                .panel
+                    h2 Proyectos
+                    ul#proyectos.proyectos 
+                        if(projects.length)
+                            each project in projects 
+                                li 
+                                    a(href=`/projects/${project.url}`)= project.name
+
+
+            block content
+
+            //- pre= vardump(projects)
+        script(src='/dist/bundle.js')
+        script(src='https://use.fontawesome.com/f86cb1dc08.js')

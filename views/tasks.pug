@@ -1,0 +1,40 @@
+extends layout 
+
+block content 
+    .contenido-principal
+        h1 #{pageName} - #{project.name}
+
+        form.agregar-tarea(action=`/projects/${project.id}/tasks` method="POST")
+            .campo 
+                label(for="task_name") Tarea:
+                input.nombre-tarea(type="text" name="task_name" placeholder="Nombre de la tarea")
+            .campo.enviar 
+                input.boton.nueva-tarea(type="submit" value="Agregar")
+
+        if errors
+            each error in errors 
+                .alerta.error= error.message
+
+        .listado-pendientes 
+            ul
+                if tasks.length
+                    each task in tasks
+                        li.tarea(data-task-id=task.id)
+                            p= task.name
+                            .acciones
+                                if task.status
+                                    i.fa.fa-check-circle-o.completo 
+                                else 
+                                    i.fa.fa-check-circle-o
+                                i.fa.fa-trash
+                else 
+                    p No hay tareas en este proyecto.
+
+        .avance 
+            h2 Avance del Proyecto 
+            #advance-bar.barra-avance
+                #percentage.porcentaje
+
+        .contenedor-acciones 
+            a(href=`/projects/edit/${project.id}` class="boton") Editar Proyecto
+            button#delete-project(data-project-id=project.id type="button" class="boton eliminar") Eliminar Proyecto
